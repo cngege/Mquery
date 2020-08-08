@@ -1,0 +1,381 @@
+//Mquery JS使用方法介绍
+
+//此JS前置类似于Jquery.js	是对原版集成的JS方法进行封装,方便记忆与理解,前置中的方法,以及整体规格可能随着更新而稍有改动,请关注更新
+//注：此前置并非用于web端,而是用于"梦之故里"开发的Minecraft BE服务端解析插件BDSJSRunner,要使用此前置请加载BDSJSRunner.dll,非必要请不要改动脚本名称
+
+//参数A	参数B表是可以填两种参数类型,并非表示需要填两个参数	1. ... 2. ...表示需要填两个参数
+
+首先引用此前置:
+let $ = getShareData("_Mquery");
+
+
+//头参数为字符串格式,内容为三类:玩家名、玩家UUID、事件关键字(关键字前加#)
+$("CNGEGE")
+$("8f976e22-78bc-3fe1-8ee5-cf5ff56347b9")
+$("#onUseItem")
+//再有就是静态方法:如
+$.log("Start Game");
+
+
+//============头参数为事件标识==
+
+//事件前监听器
+参数、返回值:
+1.typeof == function	发生事件前将调用此参数方法,方法返回值可拦截事件,传参:字符串	返回值:无返回值
+2.typeof == "string"	
+		"get" 获取玩家事件监听器	返回值:	当前设置的监听器
+		"del" 移除玩家事件监听器	返回值:	旧的监听器
+例子:$("#onChat").BListener(function(e){})
+
+
+//事件后监听器
+参数、返回值:
+1.typeof == function	发生事件后将调用此参数方法,传参:字符串	返回值:无返回值
+2.typeof == "string"	
+		"get" 获取玩家事件监听器	返回值:	当前设置的监听器
+		"del" 移除玩家事件监听器	返回值:	旧的监听器
+例子:$("#onChat").AListener(function(e){})
+
+
+
+//============头参数为玩家名称或UUID==
+
+//玩家名称重命名
+参数、返回值:
+1.typeof == "string"	新名称
+例子:$("Player").reName("张三")
+
+
+//读取玩家能力表
+无参数
+返回JSON格式玩家能力表
+例子:$("Player").getPAB()
+
+
+//设置玩家能力表
+参数、返回值：
+1.字符串:玩家能力表
+2.JSON:玩家能力表
+返回值:bool  设置是否成功
+例子:let b = $("Player").setPAB()
+
+
+//读取玩家属性表
+无参数
+返回JSON格式玩家属性表
+例子:$("Player").getPAT()
+
+
+//设置玩家临时属性表
+参数、返回值：
+1.字符串:玩家属性表
+2.JSON:玩家属性表
+返回值:bool  设置是否成功
+例子:let b = $("Player").setPAT()
+
+
+//读取玩家属性上限表
+无参数
+返回JSON格式玩家属性上限表
+例子:$("Player").getPMAT()
+
+
+//设置玩家属性上限表
+参数、返回值：
+1.字符串:玩家属性上限表
+2.JSON:玩家属性上限表
+返回值:bool  设置是否成功
+例子:let b = $("Player").getPMAT()
+
+
+
+//读取玩家背包、末影箱物品
+无参数
+返回JSON格式玩家物品表
+例子:$("Player").getPItem()
+
+
+//设置玩家物品表
+参数、返回值：
+1.字符串:玩家物品表
+2.JSON:玩家物品表
+返回值:bool  设置是否成功
+例子:let b = $("Player").setPItem()
+
+
+
+//获取玩家选择的物品
+参数、返回值
+无参数
+返回值:json  玩家选择的物品
+例子:let b = $("Player").getPSItem()
+
+
+//给玩家物品
+参数、返回值
+参数A:数字(ID)、数字(特殊值)、数字(数量)
+参数B:json	json格式物品信息
+返回值:bool	是否成功
+例子:let b = $("Player").getPSItem({"tt":10,"tv":[{"ck":"Count","cv":{"tt":1,"tv":1}},{"ck":"Damage","cv":{"tt":2,"tv":0}},{"ck":"Name","cv":{"tt":8,"tv":"minecraft:trident"}},{"ck":"tag","cv":{"tt":10,"tv":[{"ck":"ench","cv":{"tt":9,"tv":[{"tt":10,"tv":[{"ck":"id","cv":{"tt":2,"tv":10}},{"ck":"lvl","cv":{"tt":2,"tv":9999}}]}]}}]}}]})
+
+
+//获取玩家所有药水效果
+参数返回值:
+参数:无
+返回值:json格式玩家药水效果列表
+例子:let a = $("Player").getPEff();
+
+
+//设置玩家所有药水效果
+参数返回值:
+参数A:字符串	药水效果列表
+参数B:json		JSON格式药水列表
+返回值:json格式玩家药水效果列表
+例子:let a = $("Player").setPEff({"tt":9,"tv":[{"tt":10,"tv":[{"ck":"Ambient","cv":{"tt":1,"tv":0}},{"ck":"Amplifier","cv":{"tt":1,"tv":0}},{"ck":"DisplayOnScreenTextureAnimation","cv":{"tt":1,"tv":0}},{"ck":"Duration","cv":{"tt":3,"tv":3461}},{"ck":"DurationEasy","cv":{"tt":3,"tv":3461}},{"ck":"DurationHard","cv":{"tt":3,"tv":3461}},{"ck":"DurationNormal","cv":{"tt":3,"tv":3461}},{"ck":"Id","cv":{"tt":1,"tv":16}},{"ck":"ShowParticles","cv":{"tt":1,"tv":1}}]}]})
+
+
+
+//自定义玩家BOSS血条
+参数、返回值：
+参数:1.字符串 标题 2.float 百分比
+返回值：bool 是否设置成功
+例子:$("Player").setPBB("末影龙",0.56);
+
+
+//删除玩家自定义血条
+参数、返回值
+参数：无
+返回值:bool	是否删除成功
+例子:$("Player").delPBB()
+
+
+
+//设置玩家侧边计分板	计分板右边的数字为此项在计分板排列的位置
+参数、返回值
+参数：json或字符串型 计分板内容数组
+返回值:bool	是否成功
+例子:$("Player").setPS(["Player1","Player2"])
+
+
+//删除玩家侧边计分板
+参数、返回值
+参数：无
+返回值:bool	是否成功
+例子:$("Player").delPS()
+
+
+
+//读取玩家权限和模式
+参数、返回值
+参数：无
+返回值:json 玩家权限模式信息
+例子:$("Player").getPPAG()
+
+
+//读取玩家权限和模式
+参数、返回值
+参数：json或字符串型 玩家权限模式信息
+返回值:bool	是否成功
+例子:$("Player").setPPAG({})
+
+
+//查询玩家信息
+参数、返回值
+参数：无参数
+返回值：JSON 玩家信息
+例子:$("Player").info()
+
+
+//传送玩家到其他服务器
+参数:
+1.字符串 ip/域名
+2.int 可空 端口 默认19132
+返回值:bool 是否成功
+例子:$("Player").tpserver('www.xiafox.com', 19132)
+
+
+
+//tp
+参数A:
+1.浮点型 x
+2.浮点型 y
+3.浮点型 z
+4.int 维度
+参数B:
+1.string 玩家名称或uuid
+返回值:bool 是否成功
+例子:$("Player").tp(1.1,0,45,1)
+
+
+//模仿玩家说话
+参数:
+1.字符串 发送的文本
+返回值:bool 是否成功
+例子:$("Player").talkAs("我加入了游戏")
+
+
+//模仿玩家执行命令
+参数:
+1.字符串 cmd
+返回值:bool 是否成功
+例子:$("Player").cmdAS("/me 你好 js")
+
+
+//发送简单表单
+参数:
+1.字符串 title
+2.字符串 内容
+3.json或字符串 按钮数组
+4.function	回调函数	传参JSON 提交的信息
+5.浮点型 可空 超时时间
+返回值:bool 是否成功
+例子:$("Player").SForm('致命选项', '请选择：', ["生存","死亡","求助"],function(e)(),20)
+
+
+
+//发送对话框 点击前按钮反馈true,点击后按钮反馈false
+参数:
+1.字符串 title
+2.字符串 内容
+3.字符串 按钮1名称
+4.字符串 按钮2名称
+5.function	回调函数	传参JSON 提交的信息
+6.浮点型 可空 超时时间
+返回值:bool 是否成功
+例子:$("Player").MForm('致命选项', '请选择：', "生存","死亡",function(e)(),20)
+
+
+
+//发送自定义表单
+参数:
+1.json或字符串 表单数据(看例子)
+2.function	回调函数	传参JSON 提交的信息
+3.浮点型 可空 超时时间
+返回值:bool 是否成功
+例子:$("Player").CFrom({"content":[{"type":"label","text":"这是一个文本标签"},{"placeholder":"水印文本","default":"","type":"input","text":""},{"default":true,"type":"toggle","text":"开关~或许是吧"},{"min":0.0,"max":10.0,"step":2.0,"default":3.0,"type":"slider","text":"游标滑块！？"},{"default":1,"steps":["Step 1","Step 2","Step 3"],"type":"step_slider","text":"矩阵滑块？!"},{"default":1,"options":["Option 1","Option 2","Option 3"],"type":"dropdown","text":"如你所见，下拉框"}], "type":"custom_form","title":"这是一个自定义窗体"},function(e)(),20)
+
+
+//向玩家发送无前缀信息
+参数:string  内容
+返回值:无
+例子:$("Player").say("你发送的表单已收到");
+
+
+
+
+//=========================特殊方法===============
+
+
+
+//返回当前脚本版本
+非方法
+例子: let V = $.version;
+
+
+//是否为空
+参数: 内容;
+返回值:bool 是否为空
+$.isempty(null)
+
+
+//是否是uuid
+参数:字符串
+返回值bool
+$.isuuid("256543fe-5d4fs6e5-d5s4f5e6s-d55555")
+
+
+
+//玩家名称转uuid
+//参数字符串 玩家名称
+返回值 字符串 uuid
+$.nametouuid("Player");
+
+
+//JSON反序列化  字符串转JSON
+参数:字符串  json格式字符串 '{"Player":"CNGEGE","Data":[20,13,1]}'
+返回值 JSON		{"Player":"CNGEGE","Data":[20,13,1]}
+$.json('{"Player":"CNGEGE","Data":[20,13,1]}')
+
+
+//JSON序列化  JSON字符串
+参数:JSON		{"Player":"CNGEGE","Data":[20,13,1]}
+返回值 字符串  json格式字符串 '{"Player":"CNGEGE","Data":[20,13,1]}'
+$.jsonStr({"Player":"CNGEGE","Data":[20,13,1]})
+
+
+//字符串编解码
+参数字符串
+返回值 编解码后的字符串
+$.uncode()		解码
+$.encode()		编码
+
+
+//读文件
+参数 字符串 文件名
+返回值 字符串 读取的文件内容
+$.read("load.js")		
+
+
+//写文件 f:文件 t:内容 a:是否全部写入/还是追加一行
+参数
+1.文件名  字符串
+2.写入的内容 字符串
+3.是否写入整个文件/最后追加 bool
+$.write()
+
+
+//注册cmd指令信息
+参数 字符串
+1.指令 (不需要加/)
+2.说明
+返回值：无返回值
+$.setcmd('testcase', '这是一个测试用例指令说明')
+
+//返回当前时间字符串;
+$.time()	
+
+//设置全局脚本数据
+$.setdata("key",value)
+
+//获取全局脚本数据
+$.getdata("key")
+
+//删除全局脚本数据
+$.deldata("key")
+
+//写日志到控制台
+$.log()
+
+
+//运行脚本
+$.run()
+
+//运行命令 控制台不回显
+$.cmd()
+
+//获取在线玩家列表
+返回值 字符串格式玩家列表数组
+$.getplayer()
+
+
+//设置一个结构到指定位置
+返回是否成功 bool
+$.setworld(fileReadAllText('data.json'), 0, '{"x":0, "y":4, "z":0}', 0, true, true)
+
+//获取一个结构
+返回字符串格式结构信息
+$.getworld(0, '{"x":0, "y":4, "z":0}', '{"x":10, "y":14, "z":10}', false, true)
+
+
+//丢弃表单
+参数 int 表单id
+$.reform(id)
+
+//网络请求
+$.get()		1.url 2.参数 3.回调函数
+$.post()	1.url 2.参数 3.回调函数
+
+//延迟执行
+1.执行函数
+2.延迟毫秒数
+$.timeout(function(){},1000)
