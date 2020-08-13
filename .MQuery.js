@@ -175,7 +175,7 @@ let Mquery = function (a,b){
 	}
 //[例] let fid = sendCustomForm('8f976e22-78bc-3fe1-8ee5-cf5ff56347b9', '{"content":[{"type":"label","text":"这是一个文本标签"},{"placeholder":"水印文本","default":"","type":"input","text":""},{"default":true,"type":"toggle","text":"开关~或许是吧"},{"min":0.0,"max":10.0,"step":2.0,"default":3.0,"type":"slider","text":"游标滑块！？"},{"default":1,"steps":["Step 1","Step 2","Step 3"],"type":"step_slider","text":"矩阵滑块？!"},{"default":1,"options":["Option 1","Option 2","Option 3"],"type":"dropdown","text":"如你所见，下拉框"}], "type":"custom_form","title":"这是一个自定义窗体"}')
 
-	this.CFrom = (data,fun,time = 0)=>{											//发送自定义表单
+	this.CForm = (data,fun,time = 0)=>{											//发送自定义表单
 		if(typeof data == "object"){
 			data = _$.jsonStr(data);
 		}
@@ -203,16 +203,17 @@ let Mquery = function (a,b){
 	}
 }
 
-_$.version = "1.0.1";
+_$.version = "1.0.2";
 _$.isempty = v => v === undefined || v == undefined || v == null || v == "";
 _$.isuuid = s =>{let re = /\w{8}(-\w{4}){3}-\w{12}/;return re.test(s)};
 _$.nametouuid = n =>{let Player = JSON.parse(_$.getplayer());for(i=0;i<Player.length;i++){if(Player[i]["playername"] == n){return Player[i]["uuid"]}}return null};
 _$.json = JSON.parse;															//JSON 反序列化
 _$.jsonStr = JSON.stringify														//JSON 序列化为字符串
 _$.uncode = unescape;
+_$.encode = escape;
 
 _$.read = fileReadAllText;														//读文件
-_$.write = (f,t,a = false)=> a ? fileWriteAllText(f,t): fileWriteLine(f,t);				//写文件 f:文件 t:内容 a:是否全部写入/还是追加一行
+_$.write = (f,t,a = false)=> a ? fileWriteAllText(f,t): fileWriteLine(f,t);		//写文件 f:文件 t:内容 a:是否全部写入/还是追加一行
 _$.setcmd = setCommandDescribe;													//注册cmd指令信息
 _$.time = TimeNow;																//返回当前时间字符串;
 _$.setdata = setShareData;
@@ -230,7 +231,13 @@ _$.reform = releaseForm;														//丢弃表单
 _$.get = (url,data = "",fun = (e)=>{})=>{request(url,"get",data,fun)};			//网络Get请求
 _$.post = (url,data = "",fun = (e)=>{})=>{request(url,"post",data,fun)};		//网络post请求
 
-_$.timeout = setTimeout;
+_$.timeout = (a,b)=>{
+	if(typeof a == "function"){
+		setTimeout("("+a.toString()+")();",b);
+	}else if(typeof a == "string"){
+		setTimeout(a,b)
+	}
+};
 
 
 
