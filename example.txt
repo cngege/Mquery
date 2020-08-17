@@ -379,3 +379,18 @@ $.post()	1.url 2.参数 3.回调函数
 1.执行函数
 2.延迟毫秒数
 $.timeout(function(){},1000)
+
+
+//读ini文件
+1.字符串 文件
+2.字符串 项			(文件中的[xxx])
+3.字符串 key
+4.字符串 默认值 当没有找到该key 或者没有该项的时候返回该参数
+// 例：$.iniread("file.ini","Mquert","by","cngege");
+
+//写ini文件
+1.字符串 文件
+2.字符串 项			(文件中的[xxx])
+3.字符串 key
+4.字符串 值
+$.iniwrite("file.ini","Mquert","by","cngege")
