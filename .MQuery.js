@@ -204,7 +204,7 @@ let Mquery = function (a,b){
 	}
 }
 
-_$.version = "1.0.2";
+_$.version = "1.0.3";
 _$.isempty = v => v === undefined || v == undefined || v == "undefined" || v == null || v == "null" || v == "";
 _$.trim = s => s.replace(/(^\s*)|(\s*$)/g,"");									//去除首位空格
 
@@ -301,6 +301,33 @@ _$.iniwrite = (path,item,key,value)=>{
 	}
 }
 
+//简单计分板 利用指令修改计分板内容
+_$.simplesb = {
+	//添加一个计分板
+	addsb:function(tag,title){
+		_$.cmd("scoreboard objectives add "+tag+" dummy "+title);
+	},
+	//移除一个计分板
+	removesb:function(tag){
+		_$.cmd("scoreboard objectives remove "+tag);
+	},
+	//设置计分板的显示位置["sidebar","belowname","list"]//右侧、玩家名字下方、暂停菜单玩家列表
+	showsb:function(tag,pos="sidebar"){
+		_$.cmd("scoreboard objectives setdisplay "+pos+" "+tag);
+	},
+	//设置一个玩家的分数 player支持玩家名,玩家标签选择器(@a @e[type=player])
+	setval:function(tag,player,value){
+		_$.cmd("scoreboard players set "+player+" "+tag+" "+value);
+	},
+	//扣除一个玩家的分数
+	rmval:function(tag,player,value){
+		_$.cmd("scoreboard players remove "+player+ " " +tag+" "+value);
+	},
+	//删除(清空)一个计分板玩家
+	delplayer:function(tag,player){
+		_$.cmd("scoreboard players reset "+player+" "+tag)
+	}
+}
 
 
 setBeforeActListener("onFormSelect",function(e){
@@ -313,19 +340,3 @@ setBeforeActListener("onFormSelect",function(e){
 	return true;
 })
 
-/* _$.nametouuid = n =>{
-	for(a=0;a<playerlist.length;a++){
-		if(playerlist[a]["playername"] == n){
-			return playerlist[a]["uuid"];
-		}
-	}
-	
-	let Player = JSON.parse(_$.getplayer());
-	playerlist = Player;
-	for(i=0;i<Player.length;i++){
-		if(Player[i]["playername"] == n){
-			return Player[i]["uuid"];
-		}
-	}
-	return null
-}; */
